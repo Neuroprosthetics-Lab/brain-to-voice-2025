@@ -1,0 +1,17 @@
+# Brain-to-voice gitignore.
+
+# Data ignore
+*.mat
+*.h5
+*.wav
+*.pcm
+*.f32
+
+# Python ignores
+*.pyx
+*.pyc
+__pycache__/
+
+# More ignores
+*.DS_Store
+*egg-info
