@@ -1,1 +1,1 @@
-Install LPCNet vocoder in this folder. 
+Install the LPCNet vocoder in this folder. 

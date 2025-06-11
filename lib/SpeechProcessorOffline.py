@@ -1,4 +1,4 @@
-# Speech processing functions for offline implementation of brain-to-voice
+# Speech processing functions for offline implementation of brain-to-voice synthesis
 
 # Author: Maitreyee Wairagkar, 2025
 # Created: 2022-06-08
@@ -27,25 +27,25 @@ def encode_lpcnet_features_from_wav(wav_filename, lpcnet_path, temp_files_path, 
     saved_features_32_filename = temp_files_path+'/features/features_'+wav_filename[51:-4]+'.f32' # for emg data TODO - use regex
     #saved_features_32_filename = temp_files_path+'/features/features_'+wav_filename[-15:-4]+'.f32' #wav_filename[-15:-4] gives file name without .wav and without full path
 
-    # delete above files if they exist from previous run to be safe
+    # delete the above files if they exist from previous run to be safe
     delete_temp_files([temp_wav_filename, input_pcm_filename, features_f32_filename])
 
     # I. stretch the signal 
     # Get sampling frequency
     sampling_rate = librosa.get_samplerate(wav_filename)
 
-    # Load signal
+    # Load the signal
     sig, Fs = librosa.load(wav_filename, sr=sampling_rate)
     
-    # stretch to match length of neural data
+    # stretch to match the length of neural data
     #sig1 = stretch_to_match_length(sig1, length, Fs, N_FFT)
   
-    # write stretched audio to temporary file
+    # write stretched audio to a temporary file
     soundfile.write(temp_wav_filename, sig, Fs, subtype='PCM_24')
 
-    # II. Encode LPCNet features from stretched wav file
-    # Convert wav file to pcm with Fs=16k required for LPCNet encoding using ffmpeg by running commandline command
-    # send argument echo y before ffmpeg command to auto answer yes to the prompt for overwriting file
+    # II. Encode LPCNet features from the stretched wav file
+    # Convert the wav file to pcm with Fs=16k required for LPCNet encoding using ffmpeg by running the commandline command
+    # send argument echo y before ffmpeg command to auto answer yes to the prompt for overwriting the file
 
     out = []
     if platform.system() == 'Darwin': # Mac
@@ -68,7 +68,7 @@ def encode_lpcnet_features_from_wav(wav_filename, lpcnet_path, temp_files_path, 
         shutil.copy(features_f32_filename, saved_features_32_filename)
         time.sleep(2)
     
-    # Load and convert raw bytes to float 32. Looks like there are 36 features per 10ms frame (should have been 20)
+    # Load and convert raw bytes to float 32. There are 36 features per 10ms frame
     float32 = np.fromfile(features_f32_filename,  dtype=np.float32)
     
     num_features = 36
@@ -86,7 +86,7 @@ def decode_lpcnet_features_to_wav(feature_vectors, output_filename, lpcnet_path,
 
     feature_vectors = np.reshape(feature_vectors, (feature_vectors.size,))
     
-    # Write LPCNet features as binary file 
+    # Write LPCNet features as a binary file 
     feature_vectors.tofile(features_f32_filename)
     
     print(feature_vectors.shape)
@@ -98,7 +98,7 @@ def decode_lpcnet_features_to_wav(feature_vectors, output_filename, lpcnet_path,
     # Decode features from bin file to pcm using LPCNet
     os.system(lpcnet_path+'/lpcnet_demo -synthesis {} {}'.format(features_f32_filename, output_pcm_filename))
 
-    # Convert decoded PCM to wav
+    # Convert the decoded PCM to wav
     os.system('Echo y| ffmpeg -f s16le -ar 16000 -ac 1 -i {} {} &> /dev/null &'.format(output_pcm_filename, output_wav_filename))
     # &> /dev/null & is to hide the output https://askubuntu.com/questions/150844/how-to-really-hide-terminal-output
     
@@ -107,7 +107,7 @@ def decode_lpcnet_features_to_wav(feature_vectors, output_filename, lpcnet_path,
 
 def reconstruct_lpcnet_features(cepstrum_and_pitch):
     
-    # 1. Reconstruct LPC coefficients from cepstrum
+    # 1. Reconstruct the LPC coefficients from cepstrum
     n_ceps = cepstrum_and_pitch[:,:-2].shape[1]       # number of cepstral coefficients
     
     lpc_predicted = np.zeros((cepstrum_and_pitch.shape[0], 16), dtype='float32')
@@ -134,7 +134,7 @@ def reconstruct_lpcnet_features(cepstrum_and_pitch):
 # TODO: add error handling on number of cepstral coeffs
 def lpcnet_fetures_dimensionality_reduction(all_lpcnet_features, n_cepstral_coeff=18):
     # LPCNet features: 36 -> 18 cepstral coeff 2 pitch features and 16 LPC coeffs
-    # To reduce dimensionality for training the input, only keep first n cepstral coeffs and 2 pitch features
+    # To reduce the dimensionality for training the input, only keep first n cepstral coeffs and 2 pitch features
     # LPC coeff can be later reconstructed from the cepstral_coeff
 
     cepstral_coeff = all_lpcnet_features[:, :n_cepstral_coeff]
@@ -148,7 +148,7 @@ def lpcnet_fetures_dimensionality_reduction(all_lpcnet_features, n_cepstral_coef
 # Compute LPC coeff from Cepstrum:
 # https://github.com/xiph/LPCNet/issues/93
 # This follows the function lpc_from_cepstrum from freq.c from LPCNet C source code
-# Important to get all values in float 32 - beware there can be precision errors
+# Important to get all the values in float 32 - beware there can be precision errors
 def cepstrum_to_lpc(cepstral_coeff):
     # input is cepstrum of single frame of size NB_BANDS
     cepstral_coeff = np.float32(cepstral_coeff)
@@ -233,7 +233,7 @@ def cepstrum_to_lpc(cepstral_coeff):
         
     # *********** Implement Cepstrum to LPC **************
     
-    # Step 1: Get Inverse Descrete Transform TODO_ check if copy is necessary here as we are already sending a copy of var
+    # Step 1: Get Inverse Descrete Transform TODO: check if copy is necessary here 
     tmp = cepstral_coeff[:NB_BANDS].copy()
     tmp[0] += 4
     Ex = idct_(tmp) # inverse cepstrums to Bank-scale spectrogram

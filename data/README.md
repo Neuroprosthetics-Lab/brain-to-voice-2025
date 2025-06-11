@@ -1,1 +1,1 @@
-Save neural data in this folder.
+Save the neural data in this folder.

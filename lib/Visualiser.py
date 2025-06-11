@@ -11,7 +11,7 @@ import librosa
 import librosa.display
 
 
-# Print  spectrogram
+# Print spectrogram
 def print_spectrogram(spectrogram, Fs, n_fft, step_size, fmin=50, fmax = 7000):
     
     plt.figure()

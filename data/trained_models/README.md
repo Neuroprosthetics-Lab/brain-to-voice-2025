@@ -1,1 +1,1 @@
-Save save brain-to-voice decoders in this folder.
+Save the brain-to-voice decoders in this folder.
