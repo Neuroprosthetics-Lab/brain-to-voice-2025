@@ -1,0 +1,80 @@
+# ==================================================================================
+# List of sessions and session layers to use for brain-to-voice training
+# Maitreyee Wairagkar, 2025
+# ==================================================================================
+
+# Note: last session t15_day195 (session_layer 20) is held out for testing
+
+sessions:
+  - session: "t15_day025"
+    session_layer: 0
+  - session: "t15_day027"
+    session_layer: 0
+  - session: "t15_day032"
+    session_layer: 1
+  - session: "t15_day034"
+    session_layer: 1
+  - session: "t15_day039"
+    session_layer: 2
+  - session: "t15_day041"
+    session_layer: 2
+  - session: "t15_day046"
+    session_layer: 3
+  - session: "t15_day048"
+    session_layer: 3
+  - session: "t15_day067"
+    session_layer: 4
+  - session: "t15_day069"
+    session_layer: 4
+  - session: "t15_day074"
+    session_layer: 5
+  - session: "t15_day076"
+    session_layer: 5
+  - session: "t15_day081"
+    session_layer: 6
+  - session: "t15_day088"
+    session_layer: 7
+  - session: "t15_day090"
+    session_layer: 7
+  - session: "t15_day095"
+    session_layer: 8
+  - session: "t15_day097"
+    session_layer: 8
+  - session: "t15_day102"
+    session_layer: 9
+  - session: "t15_day104"
+    session_layer: 9
+  - session: "t15_day109"
+    session_layer: 10
+  - session: "t15_day110"
+    session_layer: 10
+  - session: "t15_day123"
+    session_layer: 11
+  - session: "t15_day132"
+    session_layer: 12
+  - session: "t15_day137"
+    session_layer: 13
+  - session: "t15_day139"
+    session_layer: 13
+  - session: "t15_day144"
+    session_layer: 14
+  - session: "t15_day146"
+    session_layer: 14
+  - session: "t15_day153"
+    session_layer: 15
+  - session: "t15_day165"
+    session_layer: 16
+  - session: "t15_day172"
+    session_layer: 17
+  - session: "t15_day174"
+    session_layer: 17
+  - session: "t15_day179"
+    session_layer: 18
+  - session: "t15_day181"
+    session_layer: 18
+  - session: "t15_day186"
+    session_layer: 19
+  - session: "t15_day188"
+    session_layer: 19
+  - session: "t15_day193"
+    session_layer: 20

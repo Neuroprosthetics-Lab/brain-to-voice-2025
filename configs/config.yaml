@@ -1,0 +1,54 @@
+# =========================================
+# Brain-to-Voice Decoder - Training Config
+# Maitreyee Wairagkar, 2025
+# =========================================
+
+# File paths
+paths:
+  neural_data_path: "data/t15_neural_data" #or "data/t15_control_experiment"
+  training_data: "configs/training_data_args.yaml"
+  model_path: "ckpt"
+  lpcnet_path: "dependencies/LPCNet/LPCNet-master"
+  lpc_norm_path: "dependencies/T15_lpcnet_features_norm_macOS_TTS.json"
+  electrode_mapping: "dependencies/T15_electrode_mapping_256.json"
+  ffmpeg_path: "ffmpeg"
+  aud_dat_path: "aud"
+  load_model_path: null                         # null to skip or "ckpt/xxx.tf"
+  save_model_name: "brain2voice_t15_day193.tf"  # naming convention: last session used for training            
+
+# Data parameters
+data:
+  time_steps: 60                 # 600 ms context length
+  step_size: 1                   # 10 ms
+  validation_range_start: 5770
+  validation_range_end: 8184
+  total_trials: 8184
+  n_validation_trials: 50
+  random_seed: None              # set seed for reproducible validation sampling
+  n_augmentations: 3             # augmented copies per training trial
+  augmentation_params:
+    sd_gaussian_noise: 1.2
+    sd_constant_offset: 0.6
+    offset_aug_factor_for_thresh: 0.67
+    sd_cumulative_noise: 0.02
+
+
+# Training parameters
+training:
+  batch_size: 1024
+  epochs: 15
+  early_stopping_patience: 10
+  learning_rate: 0.0005
+  adam_beta_1: 0.9
+  adam_beta_2: 0.98
+  adam_epsilon: 1.0e-9
+  huber_delta: 1.35
+
+# Model architecture
+model:
+  transformer_input_shape: [30, 128]
+  head_size: 128
+  n_heads: 4
+  n_transformer_blocks: 8
+  mlp_units: [1024, 512]
+  dropout: 0.5                
