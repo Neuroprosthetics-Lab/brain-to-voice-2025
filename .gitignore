@@ -1,16 +1,22 @@
-# Brain-to-voice gitignore.
-
 # Data ignore
 *.mat
 *.h5
+*.tf
 *.wav
 *.pcm
 *.f32
 
-# Python ignores
+# Python and Jupyter ignores
 *.pyx
 *.pyc
 __pycache__/
+.ipynb_checkpoints/
+
+# Folders
+ckpt/
+aud/*/
+data/*/
+dependencies/*/
 
 # More ignores
 *.DS_Store
